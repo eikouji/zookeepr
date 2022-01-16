@@ -1,8 +1,8 @@
 const express = require('express');
+const { animals } = require('./data/animals');
+
 const PORT = process.env.PORT || 3001;
 const app = express();
-
-const { animals } = require('./data/animals');
 
 // filter by query function // 
 function filterByQuery(query, animalsArray) {
@@ -17,22 +17,11 @@ function filterByQuery(query, animalsArray) {
        } else {
            personalityTraitsArray = query.personalityTraits;
        } 
-
-       /* Loop through each trait in the personalityTraits array:
-       personalityTraitsArray.forEach(trait => {
-           - check the trait against each animal in the filteredResults array.
-           - It is initially a copy of the animalsArray, but we're updating it for each trait in the
-           .forEach() loop.
-           For each trait being targeted by the filter, the filteredResults array will contain only
-           the entries that contain the trait, so at the end we'll have an array of animalsArray
-           that have every one of the traits when the .forEach() loop is finished.
-           like shopping on amazon.com - pick traits like "size m", "colors green or blue", "men's", material, by Amazon or other brands.
-           */
-         
+       personalityTraitsArray.ForEach(trait => {
         filteredResults = filteredResults.filter(
             animal => animal.personalityTraits.indexOf(trait) !==-1
         );
-        });
+      });
     
     }  
     if (query.diet) {
@@ -48,7 +37,6 @@ function filterByQuery(query, animalsArray) {
     //return the filtered results ; //
     return filteredResults;
 }
-
 
 function findById(id, animalsArray) {
     const result = animalsArray.filter(animal => animal.id === id)[0];
@@ -69,9 +57,9 @@ app.get('/api/animals', (req, res) => {
 app.get('/api/animals/:id', (req, res) => {
     const result = findById(req.params.id, animals);
     if (result) {
-        res.json(result);
+      res.json(result);
     } else {
-        res.send(404);
+      res.send(404);
     }
 });
 
@@ -79,3 +67,5 @@ app.get('/api/animals/:id', (req, res) => {
 app.listen(PORT, () => {
     console.log(`API server now on port ${PORT}!`);
 });
+
+// req.query multifaceted - req.param is specific to one property //
