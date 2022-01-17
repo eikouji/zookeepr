@@ -14,6 +14,8 @@ app.use(express.urlencoded({ extended: true }));
 // parse incoming JSON data //
 app.use(express.json());
 
+app.use(express.static('public')); // make these files static resources //
+
 // filter by query function // 
 function filterByQuery(query, animalsArray) {
    let personalityTraitsArray = [];
@@ -100,6 +102,27 @@ app.get('/api/animals/:id', (req, res) => {
     } else {
       res.send(404);
     }
+});
+
+// GET to serve the index.html from the express.js server //
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'));
+});
+
+
+// serve animals.html page //
+app.get('/animals', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/animals.html'));
+});
+
+// serve zookeeper.html page //
+app.get('/zookeepers', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/zookeepers.html'));
+});
+
+// serve a page that does not exist, like About, Membership, Contact. * should come last//
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'));
 });
 
 // POST data route, this time for user input to add zoo animals // post requests are user to server //
