@@ -1,4 +1,5 @@
 const $animalForm = document.querySelector('#animal-form');
+const $zookepperForm = document.querySelector('#zookeeper-form');
 
 const handleAnimalFormSubmit = event => {
   event.preventDefault();
@@ -40,7 +41,7 @@ const handleAnimalFormSubmit = event => {
       if (response.ok) {
         return response.json();
       }
-      alert('Error:' + response.statusText);
+      alert(`Error: ${response.statusText}`);
     })
     .then(postResponse => {
       console.log(postResponse);
