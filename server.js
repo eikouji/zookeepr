@@ -7,14 +7,12 @@ const { animals } = require('./data/animals');
 const PORT = process.env.PORT || 3001;
 const app = express();
 
-
-
+// make these files static resources //
+app.use(express.static('public')); 
 // parse incoming string or array data //
 app.use(express.urlencoded({ extended: true }));
 // parse incoming JSON data //
 app.use(express.json());
-
-app.use(express.static('public')); // make these files static resources //
 
 // filter by query function // 
 function filterByQuery(query, animalsArray) {
@@ -23,7 +21,6 @@ function filterByQuery(query, animalsArray) {
    let filteredResults = animalsArray;
    if (query.personalityTraits) {
        // save personalityTraits as a dedicated array. //
-       // if personalityTraits is a string, place into a new array and save //
        if (typeof query.personalityTraits === 'string') {
            personalityTraitsArray = [query.personalityTraits];
        } else {
@@ -104,11 +101,24 @@ app.get('/api/animals/:id', (req, res) => {
     }
 });
 
+// POST data route, this time for user input to add zoo animals // post requests are user to server //
+app.post('/api/animals', (req, res) => {
+    // set id based on what the next index of the array will be, as to avoid repeats or errors //
+    req.body.id = animals.length.toString();
+
+    // if any data in req.body is incorrect, send 400 error back //
+    if (!validateAnimal(req.body)) {
+        res.status(400).send('The animal is not properly formatted.');
+    } else {
+        const animal = createNewAnimal(req.body, animals);
+        res.json(animal);
+    }
+});
+
 // GET to serve the index.html from the express.js server //
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, './public/index.html'));
 });
-
 
 // serve animals.html page //
 app.get('/animals', (req, res) => {
@@ -125,19 +135,6 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, './public/index.html'));
 });
 
-// POST data route, this time for user input to add zoo animals // post requests are user to server //
-app.post('/api/animals', (req, res) => {
-    // set id based on what the next index of the array will be, as to avoid repeats or errors //
-    req.body.id = animals.length.toString();
-
-    // if any data in req.body is incorrect, send 400 error back //
-    if (!validateAnimal(req.body)) {
-        res.status(400).send('The animal is not properly formatted.');
-    } else {
-        const animal = createNewAnimal(req.body, animals);
-        res.json(animal);
-    }
-});
 app.listen(PORT, () => {
     console.log(`API server now on port ${PORT}!`);
 });
