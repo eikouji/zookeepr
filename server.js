@@ -2,6 +2,8 @@ const express = require('express');
 const { animals } = require('./data/animals');
 
 const PORT = process.env.PORT || 3001;
+
+// instantiate the server //
 const app = express();
 
 // filter by query function // 
@@ -19,22 +21,20 @@ function filterByQuery(query, animalsArray) {
        } 
        personalityTraitsArray.ForEach(trait => {
         filteredResults = filteredResults.filter(
-            animal => animal.personalityTraits.indexOf(trait) !==-1
+          animal => animal.personalityTraits.indexOf(trait) !== -1
         );
       });
-    
     }  
     if (query.diet) {
-        filteredResults = filteredResults.filter(animal => animal.diet === query.diet);
+      filteredResults = filteredResults.filter(animal => animal.diet === query.diet);
     }
     if (query.species) {
-        filteredResults = filteredResults.filter(animal => animal.species === query.species);
+      filteredResults = filteredResults.filter(animal => animal.species === query.species);
     }
     if (query.name) {
-        filteredResults = filteredResults.filter(animal => animal.name === query.name);
-    };
-
-    //return the filtered results ; //
+      filteredResults = filteredResults.filter(animal => animal.name === query.name);
+    }
+    // return the filtered results:
     return filteredResults;
 }
 
@@ -49,12 +49,11 @@ app.get('/api/animals', (req, res) => {
   if (req.query) {
       results = filterByQuery(req.query, results);
   }
-    res.json(results);
-
+  res.json(results);
 });
 
-// data route for required parameters for animal array // 
-app.get('/api/animals/:id', (req, res) => {
+// add route //
+app.get('/api/animals:id', (req,res) => {
     const result = findById(req.params.id, animals);
     if (result) {
       res.json(result);
@@ -63,9 +62,7 @@ app.get('/api/animals/:id', (req, res) => {
     }
 });
 
-
+// port // server is 3003 because palindome numbers //
 app.listen(PORT, () => {
     console.log(`API server now on port ${PORT}!`);
 });
-
-// req.query multifaceted - req.param is specific to one property //
