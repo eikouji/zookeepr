@@ -4,7 +4,7 @@ const path = require('path');
 const express = require('express');
 const { animals } = require('./data/animals');
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3003;
 const app = express();
 
 // make these files static resources //
@@ -101,6 +101,8 @@ app.get('/api/animals/:id', (req, res) => {
     }
 });
 
+
+
 // POST data route, this time for user input to add zoo animals // post requests are user to server //
 app.post('/api/animals', (req, res) => {
     // set id based on what the next index of the array will be, as to avoid repeats or errors //
@@ -135,8 +137,39 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, './public/index.html'));
 });
 
+// the GET route for serving the public index.html file //
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, './public/index.html'));
+});
+
+
+
+fetch('/api/animals', {
+  method: 'POST',
+  headers: {
+    Accept: 'application/json',
+    'Content-type': 'application/json'
+  },
+  body: JSON.stringify(animalObject)
+})
+  .then(response => {
+    if (response.ok) {
+      return response.json();
+    }
+    alert ('Error' + response.statusText);
+  })
+  .then(postResponse => {
+    console.log(postResponse);
+    alert('Great! Thank you for adding a new animal!');
+  });
+
+
+
 app.listen(PORT, () => {
     console.log(`API server now on port ${PORT}!`);
 });
 
 // req.query multifaceted - req.param is specific to one property //
+
+// stopped at 11.3.6 //
