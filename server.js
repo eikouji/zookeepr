@@ -4,7 +4,7 @@ const path = require('path');
 const express = require('express');
 const { animals } = require('./data/animals');
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3003;
 
 // instantiate the server //
 const app = express();
