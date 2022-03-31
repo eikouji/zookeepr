@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/eikouji/zookeepr#readme",
   "dependencies": {
-    "express": "^4.17.2"
+    "express": "^4.17.2",
+    "jest": "^27.5.1"
   }
 }
