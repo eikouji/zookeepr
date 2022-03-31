@@ -3,7 +3,7 @@ const animalRoutes = require('../apiRoutes/animalRoutes');
 
 router.use(animalRoutes);
 
-router.use(require('./zookeeperRoutes'));
+router.use(zookeeperRoutes);
 
 module.exports = router;
 
