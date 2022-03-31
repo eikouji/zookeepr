@@ -4,7 +4,7 @@ const path = require('path');
 const express = require('express');
 const { animals } = require('./data/animals');
 
-const PORT = process.env.PORT || 3003;
+const PORT = process.env.PORT || 3001;
 const app = express();
 
 // make these files static resources //
@@ -143,6 +143,18 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, './public/index.html'));
 });
 
+app.get('/animals', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/animals.html'));
+});
+
+app.get('/zookeepers', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/zookeepers.html'));
+});
+// this get should come last //
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'));
+});
+
 
 
 fetch('/api/animals', {
@@ -163,6 +175,23 @@ fetch('/api/animals', {
     console.log(postResponse);
     alert('Great! Thank you for adding a new animal!');
   });
+
+
+
+  // not sure where this goes //
+fetch(queryUrl)
+  .then(response => {
+      if (!response.ok) {
+          return alert('Error: ' + response.statusText);
+      }
+      return response.json();
+  })
+  .then(animalData => {
+      console.log(animalData);
+      printResults(animalData);
+  });
+
+
 
 
 
